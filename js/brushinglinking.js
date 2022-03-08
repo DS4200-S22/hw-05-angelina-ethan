@@ -228,10 +228,16 @@ d3.csv("data/iris.csv").then((data) => {
     xKey3 = "Species";
     yKey3 = "Count"; //////
 
+    const species_data = [
+      { Species: "setosa", Count: 50 },
+      { Species: "versicolor", Count: 50 },
+      { Species: "virginica", Count: 50 },
+    ];
+
     // Create X scale
     x3 = d3
       .scaleBand() //creates a band scale which divides the space into discrete bands
-      .domain(data.map((d) => d[xKey3]))
+      .domain(d3.range(species_data.length))
       .range([margin.left, width - margin.right])
       .padding(0.1);
 
@@ -253,35 +259,49 @@ d3.csv("data/iris.csv").then((data) => {
           .text(xKey3)
       );
 
-    // Find max y
-    // let maxY3 = d3.max(d3.count(data, (d) => d.xKey3));
-    // console.log(maxY3);
-
     data.map((d) => {
       console.log(d3.count(data, (row) => row.xKey3 === d));
     });
 
+    let maxY3 = d3.max(species_data, function (d) {
+      return d.Count;
+    });
+
+    console.log(maxY3);
+
     // Create Y scale
-    y2 = d3
+    y3 = d3
       .scaleLinear()
-      .domain([0, maxY2])
+      .domain([0, maxY3])
       .range([height - margin.bottom, margin.top]);
 
     // Add y axis
-    svg2
+    svg3
       .append("g")
       .attr("transform", `translate(${margin.left}, 0)`)
-      .call(d3.axisLeft(y2))
+      .call(d3.axisLeft(y3))
       .attr("font-size", "20px")
       .call((g) =>
         g
           .append("text")
           .attr("x", 0)
-          .attr("y", margin.top)
+          .attr("y", margin.top - 15)
           .attr("fill", "black")
           .attr("text-anchor", "end")
-          .text(yKey2)
+          .text(yKey3)
       );
+
+    svg3
+      .selectAll(".bar")
+      .data(species_data)
+      .enter()
+      .append("rect")
+      .attr("x", (d, i) => x3(i))
+      .attr("y", (d) => y3(d.Count))
+      .attr("height", (d) => height - margin.bottom - y3(d.Count))
+      .attr("width", x3.bandwidth())
+      .style("fill", (d) => color(d.Species))
+      .style("opacity", 0.5);
 
     /*
     xScale1 = d3
