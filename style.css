@@ -2,6 +2,11 @@ body {
   font-family: Arial;
 }
 
+.vis-holder {
+  display: flex;
+  justify-content: space-between;
+}
+
 .selected {
   opacity: 1 !important;
   stroke: black;
