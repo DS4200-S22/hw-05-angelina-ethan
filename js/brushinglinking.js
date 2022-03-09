@@ -236,6 +236,7 @@ d3.csv("data/iris.csv").then((data) => {
     xKey3 = "Species";
     yKey3 = "Count";
 
+    // Hardcoded species counts for bar chart
     const species_data = [
       { Species: "setosa", Count: 50 },
       { Species: "versicolor", Count: 50 },
